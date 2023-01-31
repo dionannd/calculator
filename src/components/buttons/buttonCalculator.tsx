@@ -62,7 +62,7 @@ const ButtonCalculator = ({ handleOperand, handleOperator }: Props) => {
       <button
         className="bg-[#0060E5] active:scale-95 transition-all duration-200 w-full h-[79px] rounded-[2px] items-center flex justify-center"
         onClick={handleOperator}
-        value="x"
+        value="*"
       >
         x
       </button>

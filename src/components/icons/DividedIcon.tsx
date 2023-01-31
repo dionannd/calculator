@@ -9,7 +9,7 @@ const DividedIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line y1="11" x2="25" y2="11" stroke="#CBE1FF" stroke-width="2" />
+      <line y1="11" x2="25" y2="11" stroke="#CBE1FF" strokeWidth="2" />
       <circle cx="12.5" cy="2" r="2" fill="#CBE1FF" />
       <circle cx="12.5" cy="19" r="2" fill="#CBE1FF" />
     </svg>

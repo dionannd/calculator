@@ -12,17 +12,20 @@ const Home: NextPage = () => {
   const handleOperand = (e: any) => {
     const value = e.target.value;
 
-    setOperand((op) => op + value);
+    // set operands input
+    setOperand((operand) => operand + value);
   };
 
   const handleOperator = (e: any) => {
     const value = e.target.value;
 
-    // if all clear
+    // if no value in operand stop
     if (value === "ac") {
       setOperand("");
-      if (answer > 0) setPrevAnswer(answer);
       setAnswer(0);
+
+      // check if we have a prev answer > 0
+      if (answer > 0) setPrevAnswer(answer);
       return;
     }
 
@@ -30,8 +33,8 @@ const Home: NextPage = () => {
     if (value === "pm") {
       if (operand === "") return;
 
-      let calculated;
       // get the last char
+      let calculated;
       if (Number(operand.slice(-1))) {
         calculated = eval(operand);
 
@@ -40,18 +43,29 @@ const Home: NextPage = () => {
           setOperand(calculated.toString());
           return;
         } else {
-          setOperand("-" + calculated.toString());
-          return;
+          calculated = eval(operand.slice(0, -1));
+          if (Math.sign(calculated)) {
+            setOperand("-" + calculated.toString());
+          } else {
+            setOperand(calculated.toString());
+          }
         }
-      } else {
+        return;
       }
+    }
+
+    /* last test for users */
+    if (value === "%") {
+      if (operand === "") return;
     }
 
     let newOperand;
     // get last operand value
     if (operand.slice(-1) === value) {
-      return;
+      newOperand = operand.slice(0, -1);
+      setOperand(newOperand + value);
     } else {
+      // get the last input operator & check if is a number
       if (!Number(operand.slice(-1))) {
         // remove the last char from operand
         newOperand = operand.slice(0, -1);
@@ -64,17 +78,30 @@ const Home: NextPage = () => {
           setOperand(newOperand + value);
           return;
         }
-      } else {
-        setOperand(operand + value);
+      } else if (operand.slice(0, -1) === "ac") {
+        setOperand("");
+
+        // Check if we have a prev answer > 0
+        if (answer > 0) setAnswer(0);
+      } else if (operand.includes("/")) {
+        newOperand = eval(operand);
+        setOperand(newOperand);
       }
     }
 
-    switch (value) {
-      case "=":
-        setAnswer(eval(operand));
-        setOperand("");
+    // if the last inputed digit is not a number stop
+    const lastDigit = operand.slice(-1);
+    if (!Number(lastDigit)) return;
 
-        if (answer > 0) setPrevAnswer(answer);
+    // if Dot(.) exists don't add again
+    if (!(operand === "." || operand.includes("."))) {
+      setOperand((operand) => operand + value);
+    }
+
+    // Swicth for some arithmetic operations
+    switch (value) {
+      case "ac":
+        setOperand("");
         break;
       case "+":
         setOperand(eval(operand) + value);
@@ -82,8 +109,20 @@ const Home: NextPage = () => {
       case "-":
         setOperand(`${eval(operand)}${value}`);
         break;
+      case "*":
+        setOperand(`${eval(operand)}${value}`);
+        break;
+      case "%":
+        console.log("percentage + Test for all viewers");
+        break;
       case "/":
         setOperand(`${eval(operand)}${value}`);
+        break;
+      case "=":
+        setOperand("");
+        setAnswer(eval(operand));
+
+        if (answer > 0) setPrevAnswer(answer);
         break;
       default:
         return;
