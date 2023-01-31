@@ -6,6 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.14",
+    "mathjs": "^11.5.0",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0"
